@@ -1,0 +1,15 @@
+{
+  "name": "pdf-tiktok",
+  "version": "1.0.0",
+  "description": "A TikTok-style PDF reader",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "http": "^0.0.1-security",
+    "fs": "^0.0.1-security",
+    "path": "^0.12.7"
+  }
+}
