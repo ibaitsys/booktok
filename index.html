@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ReadTok - TikTok-style PDF Reader</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Upload Screen -->
+        <div id="upload-screen" class="screen active">
+            <div class="upload-container">
+                <h1>ReadTok</h1>
+                <p class="subtitle">Upload up to 4 PDFs to read in alternating chunks</p>
+                <div class="upload-box" id="drop-zone">
+                    <input type="file" id="file-input" accept=".pdf" multiple style="display: none;">
+                    <img src="assets/upload-icon.svg" alt="Upload" class="upload-icon">
+                    <p>Drag & drop your PDF here or</p>
+                    <label for="file-input" id="browse-btn" class="btn" role="button" tabindex="0">Browse Files</label>
+                </div>
+                <div class="recent-docs" id="recent-docs">
+                    <h3>Recent Documents</h3>
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Reader Screen -->
+        <div id="reader-screen" class="screen">
+            <div class="reader-header">
+                <div class="progress-container">
+                    <div class="progress-bar" id="progress-bar"></div>
+                    <div class="progress-text" id="progress-text">0%</div>
+                </div>
+                <div class="document-info">
+                    <span id="document-title">Document</span>
+                    <span id="page-indicator">Page 1 of 1</span>
+                    <button id="add-files-btn" class="btn" style="margin-left:auto;">Add PDFs</button>
+                </div>
+            </div>
+            
+            <div class="reader-content" id="reader-content">
+                <!-- Pages will be dynamically inserted here -->
+            </div>
+
+            <div class="reader-controls">
+                <button id="prev-page" class="control-btn" disabled>
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="currentColor" d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                    </svg>
+                </button>
+                <div class="page-info">
+                    <span id="current-page">1</span>/<span id="total-pages">1</span>
+                </div>
+                <button id="next-page" class="control-btn">
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="currentColor" d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="settings-panel" id="settings-panel">
+                <button id="settings-btn" class="settings-btn">
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="currentColor" d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l1.03-.82c.2-.15.25-.42.12-.64l-1.01-1.68c-.12-.22-.39-.3-.61-.22l-1.19.5c-.69-.52-1.46-.93-2.3-1.19l-.22-1.23c-.05-.24-.25-.41-.49-.41H12.2c-.24 0-.44.17-.49.41l-.22 1.23c-.84.26-1.61.67-2.3 1.19l-1.19-.5c-.23-.1-.5 0-.61.22l-1.01 1.67c-.13.22-.08.49.12.64l1.03.82c-.05.3-.09.63-.09.94 0 .31.03.64.07.94l-1.03.82c-.2.15-.25.42-.12.64l1.01 1.68c.12.22.39.3.61.22l1.19-.5c.69.52 1.46.93 2.3 1.19l.22 1.23c.05.24.25.41.49.41h2.02c.24 0 .44-.17.49-.41l.22-1.23c.84-.26 1.61-.67 2.3-1.19l1.19.5c.23.1.5 0 .61-.22l1.01-1.68c.13-.22.08-.49-.12-.64l-1.01-.82zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
+                    </svg>
+                </button>
+                <div class="settings-menu" id="settings-menu">
+                    <div class="setting-option">
+                        <label for="font-size">Font Size</label>
+                        <input type="range" id="font-size" min="16" max="32" value="20">
+                    </div>
+                    <div class="setting-option">
+                        <label for="line-height">Line Height</label>
+                        <input type="range" id="line-height" min="1.2" max="2" step="0.1" value="1.5">
+                    </div>
+                    <div class="setting-option">
+                        <label for="theme">Theme</label>
+                        <select id="theme">
+                            <option value="light">Light</option>
+                            <option value="dark">Dark</option>
+                            <option value="sepia">Sepia</option>
+                        </select>
+                    </div>
+                    <div class="setting-option">
+                        <label for="skip-front-matter" style="display:flex;align-items:center;gap:.5rem;">
+                            <input type="checkbox" id="skip-front-matter" checked>
+                            Skip front matter (start at first chapter)
+                        </label>
+                    </div>
+                    <div class="setting-option">
+                        <label for="min-chapter-page">Minimum chapter page: <span id="min-chapter-page-display">5</span></label>
+                        <input type="range" id="min-chapter-page" min="1" max="30" value="5">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
